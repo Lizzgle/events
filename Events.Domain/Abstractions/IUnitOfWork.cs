@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Events.Domain.Abstractions
+﻿namespace Events.Domain.Abstractions
 {
-    internal interface IUnitOfWork
+    public interface IUnitOfWork
     {
+        Task SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }

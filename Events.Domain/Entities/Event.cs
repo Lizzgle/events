@@ -18,8 +18,8 @@
         Conference,
         Festival,
         Training,
-        Education,
         Sports,
-        Webinar
+        Webinar,
+        Concert
     }
 }

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Events.Domain.Entities;
 
 namespace Events.Domain.Abstractions
 {
-    internal interface IUserRepository
+    public interface IUserRepository : IBaseRepository<User>
     {
+        Task<IEnumerable<Participant>> GetUserEvents(int userId);
     }
 }

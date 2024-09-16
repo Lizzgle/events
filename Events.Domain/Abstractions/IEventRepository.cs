@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Events.Domain.Entities;
 
 namespace Events.Domain.Abstractions
 {
-    internal interface IEventRepository
+    public interface IEventRepository : IBaseRepository<Event>
     {
+        Task<IEnumerable<Event>> GetEventsByCriteria(string name, DateTime? date, 
+            string category, string location, CancellationToken token);
+
+        Task<Event> GetEventByName(string name, CancellationToken token);
+
+        public Task SaveImageAsync(Event @event, string image, CancellationToken token);
     }
 }

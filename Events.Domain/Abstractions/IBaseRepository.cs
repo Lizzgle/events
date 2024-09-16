@@ -1,12 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Events.Domain.Entities;
 
 namespace Events.Domain.Abstractions
 {
-    internal interface IBaseRepository
+    public interface IBaseRepository<T> where T : Entity
     {
+        public Task<IQueryable<T>> GetAllAsync(CancellationToken token = default);
+
+        public Task<T> GetByIdAsync(int id, CancellationToken token = default);
+
+        public Task CreateAsync(T entity, CancellationToken token = default);
+        public Task UpdateAsync(T entity, CancellationToken token = default);
+        public Task DeleteAsync(T entity, CancellationToken token = default);
+
     }
 }
