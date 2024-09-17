@@ -2,6 +2,9 @@
 {
     public interface IUnitOfWork
     {
-        Task SaveChangesAsync(CancellationToken cancellationToken = default);
+        IUserRepository Users { get; }
+        IParticipantRepository Participants { get; }
+        IEventRepository Events { get; }
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
 }
