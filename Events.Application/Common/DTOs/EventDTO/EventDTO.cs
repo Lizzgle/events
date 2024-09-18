@@ -14,7 +14,7 @@ namespace Events.Application.Common.DTOs.EventDTO
         public string Description { get; set; }
         public DateTime DateTime { get; set; }
         public string Location { get; set; }
-        public Category Category { get; set; }
+        public string Category { get; set; }
         public int MaxParticipants { get; set; }
         public List<ParticipantDTOWithoutEvents> Participants { get; set; }
         public string UriImage { get; set; }

@@ -22,10 +22,16 @@ namespace Events.Application.Events.Commands.CreateEvent
         {
             Event eventObj = _mapper.Map<Event>(request);
 
-            Event? dbEvent = await _eventRepository.GetByIdAsync(eventObj.Id, cancellationToken);
-
-            if (dbEvent is not null)
-                throw new KeyNotFoundException($"Event with id {eventObj.Id} just found");
+            //try
+            //{
+            //    Event? dbEvent = await _eventRepository.GetByIdAsync(eventObj.Id, cancellationToken);
+            //    throw new KeyNotFoundException($"Event with id {eventObj.Id} just found");
+            //}
+            //catch (KeyNotFoundException)
+            //{
+            //    await _eventRepository.CreateAsync(eventObj, cancellationToken);
+            //    await _unitOfWork.SaveChangesAsync(cancellationToken);
+            //}
 
             await _eventRepository.CreateAsync(eventObj, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

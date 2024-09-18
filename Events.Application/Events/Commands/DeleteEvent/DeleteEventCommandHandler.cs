@@ -26,15 +26,14 @@ namespace Events.Application.Events.Commands.DeleteEvent
 
         public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
         {
-            Event eventToDelete = _mapper.Map<Event>(request);
 
-            Event? dbEvent = await _eventRepository.GetByIdAsync(eventToDelete.Id);
+            Event? dbEvent = await _eventRepository.GetByIdAsync(request.Id);
             if (dbEvent is null)
             {
                 throw new InvalidOperationException("Event not found.");
             }
 
-            await _eventRepository.DeleteAsync(eventToDelete, cancellationToken);
+            await _eventRepository.DeleteAsync(dbEvent, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
