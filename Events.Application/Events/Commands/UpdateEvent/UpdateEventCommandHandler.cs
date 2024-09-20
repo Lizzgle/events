@@ -28,16 +28,10 @@ namespace Events.Application.Events.Commands.UpdateEvent
         {
             Event eventToUpdate = _mapper.Map<Event>(request);
 
-            //Event? dbEvent = await _eventRepository.GetByIdAsync(eventToUpdate.Id);
-            
-            //if (dbEvent is null)
-            //    throw new KeyNotFoundException($"Event with id {eventToUpdate.Id} not found");
+            Event? dbEvent = await _eventRepository.GetByIdAsync(eventToUpdate.Id);
 
-            //dbEvent.Description = request.Description;
-            //dbEvent.Location = request.Location;
-            //dbEvent.MaxParticipants = request.MaxParticipants;
-            //dbEvent.DateTime = request.DateTime;
-            //dbEvent.Category = request.Category;
+            if (dbEvent is null)
+                throw new KeyNotFoundException($"Event with id {eventToUpdate.Id} not found");
 
             await _eventRepository.UpdateAsync(eventToUpdate, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);

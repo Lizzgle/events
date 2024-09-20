@@ -1,4 +1,5 @@
-﻿using Events.Domain.Entities;
+﻿using AutoMapper;
+using Events.Application.Common.DTOs.UserDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace Events.Application.Common.DTOs.ParticipantDTO
 {
     public class ParticipantDTOWithoutEvents
     {
-        public Guid UserId { get; set; }
-        public User User { get; set; }
-
+        public Guid Id { get; set; }
+        //public ShortUserDTO User { get; set; }
+        public string UserName { get; set; }
         public DateTime DateOfRegistration { get; set; }
     }
 }

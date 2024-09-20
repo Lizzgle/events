@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,6 +25,11 @@ namespace Events.Infrastructure.Data.EntityConfigurations
             builder.Property(e => e.Location).IsRequired().HasMaxLength(200);
             builder.Property(e => e.Category).IsRequired();
             builder.Property(e => e.MaxParticipants).IsRequired();
+
+            builder
+                .HasMany(e => e.Users)
+                .WithMany(u => u.Events)
+                .UsingEntity<Participant>(ep => ep.SeedParticipants());
 
             builder.SeedEvents();
         }

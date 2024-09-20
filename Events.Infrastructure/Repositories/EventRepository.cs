@@ -8,6 +8,11 @@ namespace Events.Infrastructure.Repositories
     {
         public EventRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
+        public async Task<Event> GetEventByIdWithParticipants(Guid id, CancellationToken token)
+        {
+            return await _entities.Include(e => e.Participants).ThenInclude(p => p.User).FirstOrDefaultAsync(e => e.Id == id, token);
+        }
+
         public async Task<Event?> GetEventByName(string name, CancellationToken token)
         {
             return await _entities.FirstOrDefaultAsync(e => e.Name == name, token);

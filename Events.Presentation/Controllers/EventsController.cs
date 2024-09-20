@@ -4,6 +4,8 @@ using Events.Application.Events.Commands.DeleteEvent;
 using Events.Application.Events.Commands.UpdateEvent;
 using Events.Application.Events.Queries.GetAllEvents;
 using Events.Application.Events.Queries.GetEventById;
+using Events.Application.Events.Queries.GetEventByIdWithParticipants;
+using Events.Application.Events.Queries.GetEventByName;
 using Events.Application.Events.Queries.GetEventsByCriteria;
 using Events.Domain.Entities;
 using MediatR;
@@ -52,6 +54,25 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> GetEventByIdAsync([FromRoute] Guid id, CancellationToken token)
         {
             EventDTO eventdto = await _mediator.Send(new GetEventByIdQuery() { Id = id }, token);
+
+            return Ok(eventdto);
+        }
+
+        // GET api/<EventsController>/5
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetEventByNameAsync([FromRoute] string name, CancellationToken token)
+        {
+            EventDTO eventdto = await _mediator.Send(new GetEventByNameQuery() { Name = name }, token);
+
+            return Ok(eventdto);
+        }
+
+
+        // GET api/<EventsController>/5
+        [HttpGet("{id}WithPartisipant")]
+        public async Task<IActionResult> GetEventByIdWithParticipationAsync([FromRoute] Guid id, CancellationToken token)
+        {
+            EventDTO eventdto = await _mediator.Send(new GetEventByIdWithParticipantsQuery() { Id = id }, token);
 
             return Ok(eventdto);
         }

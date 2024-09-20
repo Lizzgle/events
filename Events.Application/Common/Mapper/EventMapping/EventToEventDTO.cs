@@ -16,7 +16,7 @@ namespace Events.Application.Common.Mapper.EventMapping
         {
             CreateMap<Event, EventDTO>();
 
-            CreateMap<Participant, ParticipantDTOWithoutEvents>();
+            CreateMap<Participant, ParticipantDTOWithoutEvents>().ForMember(p => p.UserName, opt => opt.MapFrom(p => p.User.Name));
         }
     }
  }

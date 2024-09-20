@@ -9,6 +9,8 @@ namespace Events.Domain.Abstractions
 
         Task<Event?> GetEventByName(string name, CancellationToken token);
 
+        Task<Event> GetEventByIdWithParticipants(Guid id, CancellationToken token);
+
         public Task SaveImageAsync(Event @event, string image, CancellationToken token);
     }
 }
