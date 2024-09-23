@@ -1,5 +1,6 @@
 ﻿using Events.Application.Users.Commands.Login;
 using Events.Application.Users.Commands.Registration;
+using Events.Application.Users.Queries.GetUserEvents;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,6 +31,20 @@ namespace Events.Presentation.Controllers
         {
             await _mediator.Send(loginCommand, token);
             return Ok();
+        }
+
+        [HttpGet("{userId:guid}/events")]
+        public async Task<IActionResult> GetUserEventsAsync([FromRoute] Guid userId, CancellationToken token, 
+            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
+        {
+            var query = new GetUserEventsQuery()
+            {
+                Id = userId,
+                PageNumber = pageNumber,
+                PageSize = pageSize
+            };
+            var events = await _mediator.Send(query, token);
+            return Ok(events);
         }
     }
 }

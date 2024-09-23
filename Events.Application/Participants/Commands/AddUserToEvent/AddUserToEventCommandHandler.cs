@@ -2,12 +2,6 @@
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Events.Domain.Entities;
 
 
 namespace Events.Application.Participants.Commands.AddUserToEvent

@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Events.Application.Common;
 using Events.Application.Common.DTOs.EventDTO;
+using Events.Application.Common.DTOs.UserDTO;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
 using MediatR;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Events.Application.Events.Queries.GetAllEvents
 {
-    public class GetAllEventsQueryHadler : IRequestHandler<GetAllEventsQuery, IEnumerable<EventDTO>>
+    public class GetAllEventsQueryHadler : IRequestHandler<GetAllEventsQuery, PaginatedResult<EventDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEventRepository _eventRepository;
@@ -23,11 +25,25 @@ namespace Events.Application.Events.Queries.GetAllEvents
             _eventRepository = unitOfWork.Events;
             _mapper = mapper;
         }
-        async Task<IEnumerable<EventDTO>> IRequestHandler<GetAllEventsQuery, IEnumerable<EventDTO>>.Handle(GetAllEventsQuery request, CancellationToken cancellationToken)
+
+        public async Task<PaginatedResult<EventDTO>> Handle(GetAllEventsQuery request, CancellationToken cancellationToken)
         {
             IQueryable<Event> query = await _eventRepository.GetAllAsync(cancellationToken);
-            return _mapper.Map<IEnumerable<EventDTO>>(query);
+            int count = query.Count();
 
+            List<Event> events = query
+                .OrderBy(u => u.Id)
+                .Skip((request.PageNumber - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .ToList();
+
+            return new()
+            {
+                Items = _mapper.Map<IEnumerable<EventDTO>>(events),
+                CurrentPage = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = (int)Math.Ceiling(count / (double)request.PageSize)
+            };
         }
     }
 }

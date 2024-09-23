@@ -13,8 +13,7 @@ namespace Events.Application.Common.Mapper.EventMapping
     {
         public UpdateEventCommandToEvent()
         {
-            CreateMap<UpdateEventCommand, Event>()
-            .ForMember(dest => dest.Id, opt => opt.Ignore());
+            CreateMap<UpdateEventCommand, Event>();
         }
     }
 }

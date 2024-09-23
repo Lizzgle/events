@@ -26,9 +26,10 @@ namespace Events.Presentation.Controllers
         }
         // GET: api/<EventsController>
         [HttpGet]
-        public async Task<IActionResult> GetEventsAsync(CancellationToken token)
+        public async Task<IActionResult> GetEventsAsync(CancellationToken token, 
+            [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
-            var events = await _mediator.Send(new GetAllEventsQuery(), token);
+            var events = await _mediator.Send(new GetAllEventsQuery() { PageNumber = pageNumber, PageSize = pageSize}, token);
             return Ok(events);
         }
 
@@ -37,13 +38,15 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> GetEventsByFiltersAsync([FromQuery] DateTime? date,
             [FromQuery] Category? category,
             [FromQuery] string? location,
-            CancellationToken token)
+            CancellationToken token, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
             var query = new GetEventsByCriteria
             {
                 Date = date,
                 Category = category,
-                Location = location
+                Location = location,
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
             var events = await _mediator.Send(query, token);
             return Ok(events);

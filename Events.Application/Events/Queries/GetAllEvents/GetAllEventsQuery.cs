@@ -1,4 +1,5 @@
-﻿using Events.Application.Common.DTOs.EventDTO;
+﻿using Events.Application.Common;
+using Events.Application.Common.DTOs.EventDTO;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -8,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Events.Application.Events.Queries.GetAllEvents
 {
-    public record GetAllEventsQuery : IRequest<IEnumerable<EventDTO>>
+    public record GetAllEventsQuery : IRequest<PaginatedResult<EventDTO>>
     {
-
+        public required int PageSize { get; init; }
+        public required int PageNumber { get; init; }
     }
 }

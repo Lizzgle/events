@@ -11,7 +11,7 @@ namespace Events.Infrastructure.Repositories
 
         public async Task<IQueryable<Participant>> GetByEventIdAsync(Guid id)
         {
-            var query = await _entities.Where(p => p.EventId == id).ToListAsync();
+            var query = await _entities.Include(p => p.User).Where(p => p.EventId == id).ToListAsync();
             return query.AsQueryable();
         }
 

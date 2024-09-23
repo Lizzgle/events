@@ -14,6 +14,8 @@ namespace Events.Application.Common.Mapper.ParticipantMapping
         public ParticipantProfile() 
         {
             CreateMap<Participant, ParticipantDTOWithoutEventsAndUsers>();
+
+            CreateMap<Participant, ParticipantDTOWithoutEvents>().ForMember(p => p.UserName, opt => opt.MapFrom(p => p.User.Name));
         }
 
     }

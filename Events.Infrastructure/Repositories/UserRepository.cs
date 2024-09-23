@@ -14,9 +14,9 @@ namespace Events.Infrastructure.Repositories
             return _entities.FirstOrDefaultAsync(e => e.Email == email, token);
         }
 
-        public async Task<IEnumerable<Participant>> GetUserEvents(Guid userId, CancellationToken token = default)
+        public async Task<IEnumerable<Event>> GetUserEvents(Guid userId, CancellationToken token = default)
         {
-            return await _context.Participants.Where(p => p.UserId == userId).ToListAsync(token);
+            return await _context.Events.Where(e => e.Participants.Any(p => p.UserId == userId)).ToListAsync(token);
         }
     }
 }

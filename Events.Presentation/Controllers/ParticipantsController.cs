@@ -39,9 +39,16 @@ namespace Events.Presentation.Controllers
         }
 
         [HttpGet("{eventId}")]
-        public async Task<ActionResult<IEnumerable<Participant>>> GetParticipantsByEventIdAsync([FromRoute] Guid eventId)
+        public async Task<ActionResult<IEnumerable<Participant>>> GetParticipantsByEventIdAsync([FromRoute] Guid eventId, 
+            CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
-            var participants = await _mediator.Send(new GetParticipantsByEventIdQuery() { Id = eventId });
+            var query = new GetParticipantsByEventIdQuery() 
+            { 
+                Id = eventId, 
+                PageNumber = pageNumber, 
+                PageSize = pageSize 
+            };
+            var participants = await _mediator.Send(query, cancellationToken);
             return Ok(participants);
         }
     }

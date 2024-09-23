@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Events.Application.Common;
+using Events.Application.Common.DTOs.EventDTO;
+using Events.Application.Common.DTOs.ParticipantDTO;
 using Events.Application.Common.DTOs.UserDTO;
 using Events.Domain.Abstractions;
 using MediatR;
@@ -10,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Events.Application.Users.Queries.GetUserEvents
 {
-    public class GetUserEventsQueryHandler : IRequestHandler<GetUserEventsQuery, UserDTO>
+    public class GetUserEventsQueryHandler : IRequestHandler<GetUserEventsQuery, PaginatedResult<EventDTOWithoutParticipants>>
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
@@ -22,14 +25,24 @@ namespace Events.Application.Users.Queries.GetUserEvents
             _userRepository = unitOfWork.Users;
         }
 
-        public async Task<UserDTO> Handle(GetUserEventsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<EventDTOWithoutParticipants>> Handle(GetUserEventsQuery request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByIdAsync(request.Id, cancellationToken);
             if (user is null)
                 throw new InvalidOperationException("User not found");
 
-            var events = await _userRepository.GetUserEvents(user.Id, cancellationToken);
-            return _mapper.Map<UserDTO>(user);
+            var query = await _userRepository.GetUserEvents(user.Id, cancellationToken);
+            var count = query.Count();
+            var events = query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToList();
+
+
+            return new()
+            {
+                Items = _mapper.Map<IEnumerable<EventDTOWithoutParticipants>>(events),
+                CurrentPage = request.PageNumber,
+                PageSize = request.PageSize,
+                TotalPages = (int)Math.Ceiling(count / (double)request.PageSize)
+            };
         }
     }
 }
