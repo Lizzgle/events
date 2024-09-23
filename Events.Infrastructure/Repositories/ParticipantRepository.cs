@@ -1,30 +1,31 @@
 ﻿using Events.Domain.Abstractions;
 using Events.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Events.Infrastructure.Repositories
 {
     internal class ParticipantRepository : BaseRepository<Participant>, IParticipantRepository
     {
-        private ApplicationDbContext dbContext;
+        
+        public ParticipantRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-        public ParticipantRepository(ApplicationDbContext dbContext) : base(dbContext)
+        public async Task AddUserToEvent(Guid userId, Guid eventId, CancellationToken token)
         {
-            this.dbContext = dbContext;
+            var participant = new Participant
+            {
+                UserId = userId,
+                EventId = eventId,
+                DateOfRegistration = DateTime.UtcNow
+            };
+
+            await _entities.AddAsync(participant);
         }
 
-        public Task AddUserToEvent(int userId, int eventId, CancellationToken token)
+        public async Task RemoveUserFromEvent(Guid userId, Guid eventId, CancellationToken token)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task<Event> GetEventByIdWithParticipants(int id, CancellationToken token)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task RemoveUserFromEvent(int userId, int eventId, CancellationToken token)
-        {
-            throw new NotImplementedException();
+            var participant = await _entities.FirstOrDefaultAsync(p => p.UserId == userId && p.EventId == eventId);
+            if (participant is not null)
+                _entities.Remove(participant);
         }
     }
 }

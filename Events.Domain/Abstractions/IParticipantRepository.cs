@@ -4,9 +4,7 @@ namespace Events.Domain.Abstractions
 {
     public interface IParticipantRepository : IBaseRepository<Participant>
     {
-        Task<Event> GetEventByIdWithParticipants(int id, CancellationToken token);
-
-        Task AddUserToEvent(int userId, int eventId, CancellationToken token);
-        Task RemoveUserFromEvent(int userId, int eventId, CancellationToken token);
+        Task AddUserToEvent(Guid userId, Guid eventId, CancellationToken token);
+        Task RemoveUserFromEvent(Guid userId, Guid eventId, CancellationToken token);
     }
 }

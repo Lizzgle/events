@@ -24,6 +24,7 @@ namespace Events.Infrastructure
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IEventRepository, EventRepository>();
+            services.AddScoped<IParticipantRepository, ParticipantRepository>();
             // services.AddScoped<IUserRepository, UserRepository>();
 
             return services;

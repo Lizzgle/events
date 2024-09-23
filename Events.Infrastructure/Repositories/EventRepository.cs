@@ -33,10 +33,5 @@ namespace Events.Infrastructure.Repositories
 
             return query;
         }
-
-        public Task SaveImageAsync(Event @event, string image, CancellationToken token)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

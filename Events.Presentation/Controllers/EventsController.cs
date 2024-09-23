@@ -33,7 +33,7 @@ namespace Events.Presentation.Controllers
         }
 
         // GET: api/<EventsControllerByFilters>
-        [HttpGet("search")]
+        [HttpGet("searchByFilters")]
         public async Task<IActionResult> GetEventsByFiltersAsync([FromQuery] DateTime? date,
             [FromQuery] Category? category,
             [FromQuery] string? location,
@@ -87,7 +87,6 @@ namespace Events.Presentation.Controllers
 
         // PUT api/<EventsController>/5
         [HttpPut("{id}")]
-
         public async Task<IActionResult> UpdateEventAsync( 
             [FromBody] UpdateEventCommand updateEventCommand, CancellationToken token)
         {
