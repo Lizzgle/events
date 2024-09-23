@@ -9,23 +9,15 @@ namespace Events.Infrastructure.Repositories
         
         public ParticipantRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-        public async Task AddUserToEvent(Guid userId, Guid eventId, CancellationToken token)
+        public async Task<IQueryable<Participant>> GetByEventIdAsync(Guid id)
         {
-            var participant = new Participant
-            {
-                UserId = userId,
-                EventId = eventId,
-                DateOfRegistration = DateTime.UtcNow
-            };
-
-            await _entities.AddAsync(participant);
+            var query = await _entities.Where(p => p.EventId == id).ToListAsync();
+            return query.AsQueryable();
         }
 
-        public async Task RemoveUserFromEvent(Guid userId, Guid eventId, CancellationToken token)
+        public async Task<Participant> GetByUserAndByEventAsync(Guid userId, Guid eventId, CancellationToken token = default)
         {
-            var participant = await _entities.FirstOrDefaultAsync(p => p.UserId == userId && p.EventId == eventId);
-            if (participant is not null)
-                _entities.Remove(participant);
+            return await _entities.AsNoTracking().FirstAsync(p => p.UserId == userId && p.EventId == eventId);
         }
     }
 }

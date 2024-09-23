@@ -67,16 +67,6 @@ namespace Events.Presentation.Controllers
             return Ok(eventdto);
         }
 
-
-        // GET api/<EventsController>/5
-        [HttpGet("{id}WithPartisipant")]
-        public async Task<IActionResult> GetEventByIdWithParticipationAsync([FromRoute] Guid id, CancellationToken token)
-        {
-            EventDTO eventdto = await _mediator.Send(new GetEventByIdWithParticipantsQuery() { Id = id }, token);
-
-            return Ok(eventdto);
-        }
-
         // POST api/<EventsController>
         [HttpPost]
         public async Task<IActionResult> CreateEventAsync([FromBody] CreateEventCommand createEventCommand, CancellationToken token)

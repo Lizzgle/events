@@ -10,6 +10,7 @@ using Events.Infrastructure;
 using MediatR;
 using Events.Application.Participants.Commands.AddUserToEvent;
 using Events.Application.Participants.Commands.RemoveUserFromEvent;
+using Events.Application.Events.Queries.GetEventByIdWithParticipants;
 
 namespace Events.Presentation.Controllers
 {
@@ -23,18 +24,25 @@ namespace Events.Presentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("{userId}/events/{eventId} AddUserToEvent")]
+        [HttpPost("add/{userId}/toEvent/{eventId}")]
         public async Task<ActionResult<Participant>> AddUserToEventAsync([FromRoute] Guid userId, Guid eventId)
         {
             await _mediator.Send(new AddUserToEventCommand() { UserId = userId, EventId = eventId});
             return Ok();
         }
 
-        [HttpDelete("DeleteUserToEvent")]
+        [HttpDelete("delete/{userId}/FromEvent/{eventId}")]
         public async Task<ActionResult<Participant>> RemoveUserToEventAsync([FromRoute] Guid userId, Guid eventId)
         {
             await _mediator.Send(new RemoveUserFromEventCommand() { UserId = userId, EventId = eventId });
             return Ok();
+        }
+
+        [HttpGet("{eventId}")]
+        public async Task<ActionResult<IEnumerable<Participant>>> GetParticipantsByEventIdAsync([FromRoute] Guid eventId)
+        {
+            var participants = await _mediator.Send(new GetParticipantsByEventIdQuery() { Id = eventId });
+            return Ok(participants);
         }
     }
 }

@@ -14,23 +14,22 @@ namespace Events.Application.Participants.Commands.RemoveUserFromEvent
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IEventRepository _eventRepository;
+        private readonly IParticipantRepository _participantRepository;
 
         public RemoveUserFromEventCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _eventRepository = unitOfWork.Events;
+            _participantRepository = unitOfWork.Participants;
         }
         public async Task Handle(RemoveUserFromEventCommand request, CancellationToken cancellationToken)
         {
-            Participant participant = _mapper.Map<Participant>(request);
+            Participant? participant = await _participantRepository.GetByUserAndByEventAsync(request.UserId, request.EventId, cancellationToken);
+            if (participant is null)
+                throw new InvalidOperationException("Participant not found");
 
-            participant.Event = _eventRepository.GetByIdAsync(request.EventId, cancellationToken).Result;
-            if (participant.Event is null)
-                throw new InvalidOperationException("Event not found");
-
-            await _unitOfWork.Participants.RemoveUserFromEvent(request.UserId, request.EventId, cancellationToken);
+            await _participantRepository.DeleteAsync(participant, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Events.Application.Events.Queries.GetEventByIdWithParticipants
 {
-    public class GetEventByIdWithParticipantsQueryValidator
+    public class GetParticipantsByEventIdQueryValidator
     {
     }
 }

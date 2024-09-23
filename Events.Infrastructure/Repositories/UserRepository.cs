@@ -14,27 +14,9 @@ namespace Events.Infrastructure.Repositories
             return _entities.FirstOrDefaultAsync(e => e.Email == email, token);
         }
 
-        public Task<IEnumerable<Participant>> GetUserEvents(Guid userId, CancellationToken token = default)
+        public async Task<IEnumerable<Participant>> GetUserEvents(Guid userId, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            return await _context.Participants.Where(p => p.UserId == userId).ToListAsync(token);
         }
-
-        //public async Task<Participant> AddUserToEvent(Guid userId, Guid eventId, CancellationToken token)
-        //{
-        //    var participant = new Participant
-        //    {
-        //        UserId = userId,
-        //        EventId = eventId,
-        //        DateOfRegistration = DateTime.UtcNow
-        //    };
-        //    await
-        //}
-
-        //public async Task RemoveUserFromEvent(Guid userId, Guid eventId, CancellationToken token)
-        //{
-        //    var participant = await _entities.FirstOrDefaultAsync(p => p.UserId == userId && p.EventId == eventId);
-        //    if (participant is not null)
-        //        _entities.Remove(participant);
-        //}
     }
 }

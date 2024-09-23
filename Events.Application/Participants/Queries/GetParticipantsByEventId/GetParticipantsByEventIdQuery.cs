@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Events.Application.Events.Queries.GetEventByIdWithParticipants
 {
-    public class GetEventByIdWithParticipantsQuery : IRequest<EventDTO>
+    public class GetParticipantsByEventIdQuery : IRequest<IEnumerable<ParticipantDTOWithoutEventsAndUsers>>
     {
         public required Guid Id { get; set; }
     }

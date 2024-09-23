@@ -9,6 +9,5 @@ namespace Events.Domain.Abstractions
 
         Task<Event?> GetEventByName(string name, CancellationToken token);
 
-        Task<Event> GetEventByIdWithParticipants(Guid id, CancellationToken token);
     }
 }

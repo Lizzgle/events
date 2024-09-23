@@ -39,7 +39,7 @@ namespace Events.Application.Participants.Commands.AddUserToEvent
             if (participant.Event.Participants.Any(p => p.UserId == participant.UserId))
                 throw new InvalidOperationException("User already participates in this event");
 
-            await _participantRepository.AddUserToEvent(participant.UserId, participant.EventId, cancellationToken);
+            await _participantRepository.CreateAsync(participant);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
