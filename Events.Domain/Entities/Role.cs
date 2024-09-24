@@ -21,5 +21,9 @@ namespace Events.Domain.Entities
 
         public static Role Client => new(1, "client");
         public static Role Admin => new(2, "admin");
+
+        public override string ToString() => Name;
+
+        public static explicit operator int(Role role) => role.Id;
     }
 }

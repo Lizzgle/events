@@ -24,11 +24,11 @@ namespace Events.Infrastructure.Data.EntityConfigurations
             builder.Property(u => u.Name).IsRequired().HasMaxLength(255);
             builder.Property(u => u.DateOfBirth).IsRequired();
 
-            builder.SeedUsers();
+
             builder.HasMany(u => u.Roles).WithMany()
                             .UsingEntity<UserRole>(ur => ur.SeedUserRole());
 
-
+            builder.SeedUsers();
         }
     }
 }

@@ -26,6 +26,14 @@ namespace Events.Presentation.Providers
                 new(ClaimTypes.Email, user.Email)
             };
 
+            if (user.Roles.Count > 0)
+                claims.AddRange(
+                    user
+                    .Roles
+                    .Select(
+                        r => new Claim(ClaimTypes.Role, r.ToString()))
+                    );
+
             var signingCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
@@ -36,7 +44,7 @@ namespace Events.Presentation.Providers
                 _jwtOptions.Audience,
                 claims,
                 null,
-                DateTime.UtcNow.AddHours(_jwtOptions.TokenExpiration),
+                DateTime.UtcNow.AddHours(1),
                 signingCredentials);
 
             string tokenValue = new JwtSecurityTokenHandler()

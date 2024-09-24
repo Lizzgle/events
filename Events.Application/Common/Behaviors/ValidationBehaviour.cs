@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Events.Application.Common.Exceptions;
+using FluentValidation;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Events.Application.Common
+namespace Events.Application.Common.Behaviors
 {
     public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
      where TRequest : notnull
@@ -34,7 +35,7 @@ namespace Events.Application.Common
                     .ToList();
 
                 if (failures.Count != 0)
-                    throw new ValidationException(failures);
+                    throw new ValidationErrorException(failures);
             }
             return await next();
         }

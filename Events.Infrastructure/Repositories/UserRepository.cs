@@ -11,7 +11,7 @@ namespace Events.Infrastructure.Repositories
 
         public Task<User?> GetUserByEmail(string email, CancellationToken token)
         {
-            return _entities.FirstOrDefaultAsync(e => e.Email == email, token);
+            return _entities.Include(r => r.Roles).FirstOrDefaultAsync(e => e.Email == email, token);
         }
 
         public async Task<IEnumerable<Event>> GetUserEvents(Guid userId, CancellationToken token = default)

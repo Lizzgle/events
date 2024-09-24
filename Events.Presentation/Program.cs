@@ -3,6 +3,7 @@ using Events.Application.Common.Providers;
 using Events.Domain.Entities;
 using Events.Infrastructure;
 using Events.Presentation;
+using Events.Presentation.Middlewares;
 using Events.Presentation.Options.Models;
 using Events.Presentation.Options.Setups;
 using Events.Presentation.Providers;
@@ -33,7 +34,10 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

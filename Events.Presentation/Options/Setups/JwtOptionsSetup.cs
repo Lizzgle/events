@@ -20,7 +20,6 @@ namespace Events.Presentation.Options.Setups
             options.Issuer = section["Issuer"]!;
             options.Audience = section["Audience"]!;
             options.SecretKey = section["SecretKey"]!;
-            options.TokenExpiration = int.Parse(section["TokenExpiration"]!);
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Events.Application.Common;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using MediatR;
+using Events.Application.Common.Behaviors;
 
 namespace Events.Application
 {
