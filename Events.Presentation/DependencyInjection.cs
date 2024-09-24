@@ -1,8 +1,10 @@
 ﻿using Events.Application.Common.Providers;
+using Events.Application.Common.Services;
 using Events.Domain.Entities;
 using Events.Presentation.Options.Models;
 using Events.Presentation.Options.Setups;
 using Events.Presentation.Providers;
+using Events.Presentation.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -60,7 +62,7 @@ namespace Events.Presentation
                 });
             });
 
-            //services.AddScoped<IImageService, ImageService>();
+            services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IJwtProvider, JwtProvider>();
 
             return services;
@@ -69,7 +71,7 @@ namespace Events.Presentation
         private static IServiceCollection ConfigureOptions(this IServiceCollection services)
         {
             // KEEP launchSettings.json and applicatoinSettings.json in sync
-            //services.ConfigureOptions<WWWRootOptionsSetup>();
+            services.ConfigureOptions<WWWRootOptionsSetup>();
             services.ConfigureOptions<JwtOptionsSetup>();
 
             return services;

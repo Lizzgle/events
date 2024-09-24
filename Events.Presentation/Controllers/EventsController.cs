@@ -1,4 +1,5 @@
 ﻿using Events.Application.Common.DTOs.EventDTO;
+using Events.Application.Events.Commands.AddImage;
 using Events.Application.Events.Commands.CreateEvent;
 using Events.Application.Events.Commands.DeleteEvent;
 using Events.Application.Events.Commands.UpdateEvent;
@@ -96,6 +97,20 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> DeleteEventAsync([FromRoute] Guid id, CancellationToken token)
         {
             await _mediator.Send(new DeleteEventCommand() { Id = id }, token);
+            return Ok();
+        }
+
+        [HttpPost("image/{id:guid}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
+        public async Task<IActionResult> AddImageAsync([FromRoute] Guid id, IFormFile formFile, CancellationToken token)
+        {
+            await _mediator.Send(new AddImageCommand()
+            {
+                Id = id,
+                FileName = formFile.FileName,
+                ImageStream = formFile.OpenReadStream()
+            }, token);
+
             return Ok();
         }
     }
