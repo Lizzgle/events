@@ -8,6 +8,12 @@ namespace Events.Infrastructure.Repositories
     {
         public EventRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
+        public async Task<int> CountOfParticipants(Guid eventId, CancellationToken token = default)
+        {
+            int count = await _context.Participants.Where(p => p.EventId == eventId).CountAsync();
+            return count;
+        }
+
         public async Task<Event?> GetEventByName(string name, CancellationToken token)
         {
             return await _entities.FirstOrDefaultAsync(e => e.Name == name, token);

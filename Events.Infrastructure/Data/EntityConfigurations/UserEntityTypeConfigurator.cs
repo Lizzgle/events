@@ -1,4 +1,5 @@
 ﻿using Events.Domain.Entities;
+using Events.Infrastructure.Data.Models;
 using Events.Infrastructure.Data.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -24,6 +25,10 @@ namespace Events.Infrastructure.Data.EntityConfigurations
             builder.Property(u => u.DateOfBirth).IsRequired();
 
             builder.SeedUsers();
+            builder.HasMany(u => u.Roles).WithMany()
+                            .UsingEntity<UserRole>(ur => ur.SeedUserRole());
+
+
         }
     }
 }

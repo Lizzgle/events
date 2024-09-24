@@ -11,6 +11,7 @@ using MediatR;
 using Events.Application.Participants.Commands.AddUserToEvent;
 using Events.Application.Participants.Commands.RemoveUserFromEvent;
 using Events.Application.Events.Queries.GetEventByIdWithParticipants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Events.Presentation.Controllers
 {
@@ -25,6 +26,7 @@ namespace Events.Presentation.Controllers
         }
 
         [HttpPost("add/{userId}/toEvent/{eventId}")]
+        [Authorize(Policy = PolicyTypes.ClientPolicy)]
         public async Task<ActionResult<Participant>> AddUserToEventAsync([FromRoute] Guid userId, Guid eventId)
         {
             await _mediator.Send(new AddUserToEventCommand() { UserId = userId, EventId = eventId});
@@ -32,6 +34,7 @@ namespace Events.Presentation.Controllers
         }
 
         [HttpDelete("delete/{userId}/FromEvent/{eventId}")]
+        [Authorize(Policy = PolicyTypes.ClientPolicy)]
         public async Task<ActionResult<Participant>> RemoveUserToEventAsync([FromRoute] Guid userId, Guid eventId)
         {
             await _mediator.Send(new RemoveUserFromEventCommand() { UserId = userId, EventId = eventId });
@@ -39,6 +42,7 @@ namespace Events.Presentation.Controllers
         }
 
         [HttpGet("{eventId}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<ActionResult<IEnumerable<Participant>>> GetParticipantsByEventIdAsync([FromRoute] Guid eventId, 
             CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {

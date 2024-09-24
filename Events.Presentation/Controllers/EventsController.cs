@@ -9,6 +9,7 @@ using Events.Application.Events.Queries.GetEventByName;
 using Events.Application.Events.Queries.GetEventsByCriteria;
 using Events.Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -72,6 +73,7 @@ namespace Events.Presentation.Controllers
 
         // POST api/<EventsController>
         [HttpPost]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> CreateEventAsync([FromBody] CreateEventCommand createEventCommand, CancellationToken token)
         {
             await _mediator.Send(createEventCommand, token);
@@ -80,6 +82,7 @@ namespace Events.Presentation.Controllers
 
         // PUT api/<EventsController>/5
         [HttpPut("{id}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> UpdateEventAsync( 
             [FromBody] UpdateEventCommand updateEventCommand, CancellationToken token)
         {
@@ -89,6 +92,7 @@ namespace Events.Presentation.Controllers
 
         // DELETE api/<EventsController>/5
         [HttpDelete("{id}")]
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> DeleteEventAsync([FromRoute] Guid id, CancellationToken token)
         {
             await _mediator.Send(new DeleteEventCommand() { Id = id }, token);

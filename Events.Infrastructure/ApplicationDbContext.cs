@@ -14,6 +14,8 @@ namespace Events.Infrastructure
     {
         public DbSet<Event> Events => Set<Event>();
         public DbSet<Participant> Participants => Set<Participant>();
+
+        public DbSet<Role> Roles => Set<Role>();
         public DbSet<User> Users => Set<User>();
 
         public ApplicationDbContext(DbContextOptions options)
@@ -27,6 +29,7 @@ namespace Events.Infrastructure
         {
             modelBuilder.ApplyConfiguration(new EventEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new ParticipantEntityTypeConfigurator());
+            modelBuilder.ApplyConfiguration(new RoleEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new UserEntityTypeConfigurator());
 
 

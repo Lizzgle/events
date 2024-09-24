@@ -1,24 +1,24 @@
 using Events.Application;
+using Events.Application.Common.Providers;
 using Events.Domain.Entities;
 using Events.Infrastructure;
+using Events.Presentation;
+using Events.Presentation.Options.Models;
+using Events.Presentation.Options.Setups;
+using Events.Presentation.Providers;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
+using System.Configuration;
 using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
-    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
-    });
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
 
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddPresentationServices(builder.Configuration);
 
 var app = builder.Build();
 

@@ -43,7 +43,7 @@ namespace Events.Infrastructure.Data.Seeders
                     DateTime = DateTime.Parse("28.07.2025 14:00"),
                     Location = "Браслав",
                     Category = Category.Festival,
-                    MaxParticipants = 100000,
+                    MaxParticipants = 3,
                     UriImage = ""
                 }
                 ]);

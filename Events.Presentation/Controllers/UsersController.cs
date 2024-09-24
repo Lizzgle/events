@@ -2,6 +2,7 @@
 using Events.Application.Users.Commands.Registration;
 using Events.Application.Users.Queries.GetUserEvents;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -22,18 +23,19 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> RegistrationAsync([FromBody] RegistrationCommand registrationCommand, 
             CancellationToken token = default)
         {
-            await _mediator.Send(registrationCommand, token);
-            return Ok();
+            RegistrationCommandResponse response = await _mediator.Send(registrationCommand, token);
+            return Ok(response);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand loginCommand, CancellationToken token = default)
         {
-            await _mediator.Send(loginCommand, token);
-            return Ok();
+            LoginCommandResponse response = await _mediator.Send(loginCommand, token);
+            return Ok(response);
         }
 
         [HttpGet("{userId:guid}/events")]
+        [Authorize(Policy = PolicyTypes.ClientPolicy)]
         public async Task<IActionResult> GetUserEventsAsync([FromRoute] Guid userId, CancellationToken token, 
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
