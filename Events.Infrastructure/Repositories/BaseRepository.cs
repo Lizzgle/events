@@ -1,11 +1,6 @@
 ﻿using Events.Domain.Abstractions;
 using Events.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Infrastructure.Repositories
 {
@@ -18,35 +13,32 @@ namespace Events.Infrastructure.Repositories
             _context = context;
             _entities = context.Set<T>();
         }
-        public async Task CreateAsync(T entity, CancellationToken token = default)
+        public virtual async Task CreateAsync(T entity, CancellationToken token = default)
         {
             await _entities.AddAsync(entity);
         }
 
-        public async Task DeleteAsync(T entity, CancellationToken token = default)
+        public Task DeleteAsync(T entity, CancellationToken token = default)
         {
             _entities.Remove(entity);
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
-        public async Task<IQueryable<T>> GetAllAsync(CancellationToken token = default)
+        public Task<IQueryable<T>> GetAllAsync(CancellationToken token = default)
         {
-            var query = await _entities.ToListAsync(token);
-            return query.AsQueryable();
+            return Task.FromResult(_entities.AsNoTracking().AsQueryable());
         }
 
-        public async Task<T> GetByIdAsync(Guid id, CancellationToken token = default)
+        public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken token = default)
         {
-            var entity = await _entities.FindAsync(id);
-            if (entity is null)
-                throw new ArgumentException("Entity not found");
+            var entity = await _entities.AsNoTracking().FirstOrDefaultAsync(e => e.Id == id, token);
             return entity;
         }
 
-        public async Task UpdateAsync(T entity, CancellationToken token = default)
+        public virtual Task UpdateAsync(T entity, CancellationToken token = default)
         {
             _entities.Update(entity);
-            await Task.CompletedTask;
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Events.Application.Users.Commands.Login;
+using Events.Application.Users.Commands.RefreshToken;
 using Events.Application.Users.Commands.Registration;
 using Events.Application.Users.Queries.GetUserEvents;
 using MediatR;
@@ -31,6 +32,14 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand loginCommand, CancellationToken token = default)
         {
             LoginCommandResponse response = await _mediator.Send(loginCommand, token);
+            return Ok(response);
+        }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenCommand refreshTokenCommand, CancellationToken token = default)
+        {
+            RefreshTokenCommandResponse response = await _mediator.Send(refreshTokenCommand, token);
+
             return Ok(response);
         }
 

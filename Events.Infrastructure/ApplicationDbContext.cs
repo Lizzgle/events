@@ -1,12 +1,6 @@
 ﻿using Events.Domain.Entities;
 using Events.Infrastructure.Data.EntityConfigurations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Infrastructure
 {
@@ -21,7 +15,7 @@ namespace Events.Infrastructure
         public ApplicationDbContext(DbContextOptions options)
         : base(options)
         {
-            Database.EnsureDeleted();
+            //Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

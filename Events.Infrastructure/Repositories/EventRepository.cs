@@ -8,31 +8,14 @@ namespace Events.Infrastructure.Repositories
     {
         public EventRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-        public async Task<int> CountOfParticipants(Guid eventId, CancellationToken token = default)
+        public async Task<int> CountOfParticipantsAsync(Guid eventId, CancellationToken token = default)
         {
-            int count = await _context.Participants.Where(p => p.EventId == eventId).CountAsync();
-            return count;
+            return await _context.Participants.Where(p => p.EventId == eventId).CountAsync();
         }
 
-        public async Task<Event?> GetEventByName(string name, CancellationToken token)
+        public async Task<Event?> GetEventByNameAsync(string name, CancellationToken token = default)
         {
-            return await _entities.FirstOrDefaultAsync(e => e.Name == name, token);
-        }
-
-        public async Task<IQueryable<Event>> GetEventsByCriteria(DateTime? date, Category? category, string? location, CancellationToken token = default)
-        {
-            IQueryable<Event> query = _entities;
-
-            if (date.HasValue)
-                query = query.Where(e => e.DateTime.Date == date);
-
-            if (category.HasValue)
-                query = query.Where(e => e.Category == category);
-
-            if (!string.IsNullOrEmpty(location))
-                query = query.Where(e => e.Location == location);
-
-            return query;
+            return await _entities.AsNoTracking().FirstOrDefaultAsync(e => e.Name == name, token);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Events.Domain.Entities;
+﻿using Events.Domain.Enums;
 using MediatR;
 
 namespace Events.Application.Events.Commands.CreateEvent

@@ -1,10 +1,4 @@
-﻿using Events.Application.Events.Commands.CreateEvent;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
 namespace Events.Application.Events.Commands.UpdateEvent
 {
@@ -14,7 +8,7 @@ namespace Events.Application.Events.Commands.UpdateEvent
         {
             RuleFor(x => x.Name).NotEmpty().MaximumLength(100);
             RuleFor(x => x.Description).NotEmpty().MaximumLength(500);
-            RuleFor(x => x.DateTime).NotEmpty().GreaterThanOrEqualTo(DateTime.Now);
+            RuleFor(x => x.DateTime).NotEmpty().GreaterThanOrEqualTo(DateTime.UtcNow);
             RuleFor(x => x.Location).NotEmpty().MaximumLength(200);
             RuleFor(x => x.Category).NotEmpty();
             RuleFor(x => x.MaxParticipants).NotEmpty().GreaterThan(0);

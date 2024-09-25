@@ -6,13 +6,12 @@ namespace Events.Infrastructure.Repositories
 {
     internal class ParticipantRepository : BaseRepository<Participant>, IParticipantRepository
     {
-        
         public ParticipantRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 
-        public async Task<IQueryable<Participant>> GetByEventIdAsync(Guid id)
+        public Task<IQueryable<Participant>> GetByEventIdAsync(Guid eventId, CancellationToken token = default)
         {
-            var query = await _entities.Include(p => p.User).Where(p => p.EventId == id).ToListAsync();
-            return query.AsQueryable();
+            var query = _entities.AsNoTracking().Include(p => p.User).Where(p => p.EventId == eventId).AsQueryable();
+            return Task.FromResult(query);
         }
 
         public async Task<Participant> GetByUserAndByEventAsync(Guid userId, Guid eventId, CancellationToken token = default)

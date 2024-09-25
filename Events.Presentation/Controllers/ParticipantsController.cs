@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using Events.Domain.Entities;
-using Events.Infrastructure;
 using MediatR;
 using Events.Application.Participants.Commands.AddUserToEvent;
 using Events.Application.Participants.Commands.RemoveUserFromEvent;
@@ -44,7 +37,7 @@ namespace Events.Presentation.Controllers
         [HttpGet("{eventId}")]
         [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<ActionResult<IEnumerable<Participant>>> GetParticipantsByEventIdAsync([FromRoute] Guid eventId, 
-            CancellationToken cancellationToken, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
+            CancellationToken token, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
             var query = new GetParticipantsByEventIdQuery() 
             { 
@@ -52,7 +45,7 @@ namespace Events.Presentation.Controllers
                 PageNumber = pageNumber, 
                 PageSize = pageSize 
             };
-            var participants = await _mediator.Send(query, cancellationToken);
+            var participants = await _mediator.Send(query, token);
             return Ok(participants);
         }
     }

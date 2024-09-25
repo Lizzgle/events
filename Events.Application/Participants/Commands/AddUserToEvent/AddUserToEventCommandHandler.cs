@@ -11,38 +11,41 @@ namespace Events.Application.Participants.Commands.AddUserToEvent
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IParticipantRepository _participantRepository;
+        private readonly IEventRepository _eventRepository;
+        private readonly IUserRepository _userRepository;
 
         public AddUserToEventCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _participantRepository = unitOfWork.Participants;
+            _participantRepository = unitOfWork.participantRepository;
+            _eventRepository = unitOfWork.eventRepository;
+            _userRepository = unitOfWork.userRepository;
         }
-        public async Task Handle(AddUserToEventCommand request, CancellationToken cancellationToken)
+        public async Task Handle(AddUserToEventCommand request, CancellationToken token)
         {
             Participant participant = _mapper.Map<Participant>(request);
 
-            Event eventdb = participant.Event;
-            User userdb = participant.User;
+            Event? eventdb = participant.Event;
+            User? userdb = participant.User;
 
-            eventdb = await _unitOfWork.Events.GetByIdAsync(request.EventId, cancellationToken);
+            eventdb = await _eventRepository.GetByIdAsync(request.EventId, token);
             if (eventdb is null)
                 throw new InvalidOperationException("Event not found");
-
-            userdb = await _unitOfWork.Users.GetByIdAsync(request.UserId, cancellationToken);
+            
+            userdb = await _userRepository.GetByIdAsync(request.UserId, token);
             if (userdb is null)
                 throw new InvalidOperationException("User not found");
 
             if (eventdb.Participants.Any(p => p.UserId == userdb.Id))
                 throw new InvalidOperationException("User already participates in this event");
 
-
-            int count = await _unitOfWork.Events.CountOfParticipants(eventdb.Id, cancellationToken);
-            if (count == eventdb.MaxParticipants)
+            int count = await _eventRepository.CountOfParticipantsAsync(eventdb.Id, token);
+            if (count >= eventdb.MaxParticipants)
                 throw new InvalidOperationException("Event is full");
 
             await _participantRepository.CreateAsync(participant);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _unitOfWork.SaveChangesAsync(token);
         }
     }
 }

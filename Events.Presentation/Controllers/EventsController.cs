@@ -1,14 +1,13 @@
-﻿using Events.Application.Common.DTOs.EventDTO;
+﻿using Events.Application.Common.DTOs;
 using Events.Application.Events.Commands.AddImage;
 using Events.Application.Events.Commands.CreateEvent;
 using Events.Application.Events.Commands.DeleteEvent;
 using Events.Application.Events.Commands.UpdateEvent;
 using Events.Application.Events.Queries.GetAllEvents;
 using Events.Application.Events.Queries.GetEventById;
-using Events.Application.Events.Queries.GetEventByIdWithParticipants;
 using Events.Application.Events.Queries.GetEventByName;
-using Events.Application.Events.Queries.GetEventsByCriteria;
-using Events.Domain.Entities;
+using Events.Application.Events.Queries.GetFilteredEvent;
+using Events.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,7 +41,7 @@ namespace Events.Presentation.Controllers
             [FromQuery] string? location,
             CancellationToken token, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
-            var query = new GetEventsByCriteria
+            var query = new GetFilteredEventQuery()
             {
                 Date = date,
                 Category = category,
@@ -59,7 +58,6 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> GetEventByIdAsync([FromRoute] Guid id, CancellationToken token)
         {
             EventDTO eventdto = await _mediator.Send(new GetEventByIdQuery() { Id = id }, token);
-
             return Ok(eventdto);
         }
 
@@ -68,7 +66,6 @@ namespace Events.Presentation.Controllers
         public async Task<IActionResult> GetEventByNameAsync([FromRoute] string name, CancellationToken token)
         {
             EventDTO eventdto = await _mediator.Send(new GetEventByNameQuery() { Name = name }, token);
-
             return Ok(eventdto);
         }
 
@@ -104,12 +101,13 @@ namespace Events.Presentation.Controllers
         [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<IActionResult> AddImageAsync([FromRoute] Guid id, IFormFile formFile, CancellationToken token)
         {
-            await _mediator.Send(new AddImageCommand()
+            var query = new AddImageCommand()
             {
                 Id = id,
                 FileName = formFile.FileName,
                 ImageStream = formFile.OpenReadStream()
-            }, token);
+            };
+            await _mediator.Send(query, token);
 
             return Ok();
         }

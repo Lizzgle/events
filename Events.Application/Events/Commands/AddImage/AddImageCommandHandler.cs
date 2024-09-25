@@ -2,11 +2,6 @@
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Application.Events.Commands.AddImage
 {
@@ -19,7 +14,7 @@ namespace Events.Application.Events.Commands.AddImage
         public AddImageCommandHandler(IUnitOfWork unitOfWork,IImageService imageService)
         {
             _unitOfWork = unitOfWork;
-            _eventRepository = unitOfWork.Events;
+            _eventRepository = unitOfWork.eventRepository;
             _imageService = imageService;
         }
 

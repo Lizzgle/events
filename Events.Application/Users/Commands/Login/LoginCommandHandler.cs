@@ -2,11 +2,6 @@
 using Events.Application.Common.Providers;
 using Events.Domain.Abstractions;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Application.Users.Commands.Login
 {
@@ -20,19 +15,14 @@ namespace Events.Application.Users.Commands.Login
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _userRepository = unitOfWork.Users;
+            _userRepository = unitOfWork.userRepository;
             _jwtProvider = jwtProvider;
         }
-        public async Task Han1dle(LoginCommand request, CancellationToken cancellationToken)
-        {
-            var user = await _userRepository.GetUserByEmail(request.Email, cancellationToken);
-            if (user is null)
-                throw new InvalidOperationException("Invalid credentials");
-        }
 
-        public async Task<LoginCommandResponse> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginCommandResponse> Handle(LoginCommand request, CancellationToken token)
         {
-            var user = await _userRepository.GetUserByEmail(request.Email, cancellationToken);
+            var user = await _userRepository.GetUserByEmailAsync(request.Email, token);
+
             if (user is null)
                 throw new InvalidOperationException("Invalid credentials");
 
@@ -42,10 +32,10 @@ namespace Events.Application.Users.Commands.Login
             user.RefreshToken = refresh;
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-            await _userRepository.UpdateAsync(user, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _userRepository.UpdateAsync(user, token);
+            await _unitOfWork.SaveChangesAsync(token);
 
-            return new() { JwtToken = jwt, RefreshToken = refresh, IsLogin = true };
+            return new() { JwtToken = jwt, RefreshToken = refresh};
         }
     }
 }

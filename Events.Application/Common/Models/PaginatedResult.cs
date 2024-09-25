@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Events.Application.Common
+﻿namespace Events.Application.Common.Models
 {
     public class PaginatedResult<T>
     {

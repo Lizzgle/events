@@ -1,16 +1,7 @@
 using Events.Application;
-using Events.Application.Common.Providers;
-using Events.Domain.Entities;
 using Events.Infrastructure;
 using Events.Presentation;
 using Events.Presentation.Middlewares;
-using Events.Presentation.Options.Models;
-using Events.Presentation.Options.Setups;
-using Events.Presentation.Providers;
-using Microsoft.OpenApi.Any;
-using Microsoft.OpenApi.Models;
-using System.Configuration;
-using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

@@ -1,11 +1,5 @@
 ﻿using Events.Domain.Abstractions;
 using Events.Infrastructure.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Infrastructure
 {
@@ -22,13 +16,13 @@ namespace Events.Infrastructure
             _dbContext = dbContext;
         }
 
-        public IUserRepository Users => _users ??= new UserRepository(_dbContext);
-        public IParticipantRepository Participants => _participants ??= new ParticipantRepository(_dbContext);
-        public IEventRepository Events => _events ??= new EventRepository(_dbContext);
+        public IUserRepository userRepository => _users ??= new UserRepository(_dbContext);
+        public IParticipantRepository participantRepository => _participants ??= new ParticipantRepository(_dbContext);
+        public IEventRepository eventRepository => _events ??= new EventRepository(_dbContext);
 
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+        public Task<int> SaveChangesAsync(CancellationToken token)
         {
-            return _dbContext.SaveChangesAsync(cancellationToken);
+            return _dbContext.SaveChangesAsync(token);
         }
     }
 }

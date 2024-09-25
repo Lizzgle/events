@@ -3,12 +3,6 @@ using Events.Application.Common.Providers;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Application.Users.Commands.Registration
 {
@@ -22,34 +16,28 @@ namespace Events.Application.Users.Commands.Registration
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
-            _userRepository = unitOfWork.Users;
+            _userRepository = unitOfWork.userRepository;
             _jwtProvider = jwtProvider;
         }
 
-        public async Task Hand1le(RegistrationCommand request, CancellationToken cancellationToken)
+        public async Task<RegistrationCommandResponse> Handle(RegistrationCommand request, CancellationToken token)
         {
             User user = _mapper.Map<User>(request);
+
             
             await _userRepository.CreateAsync(user);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task<RegistrationCommandResponse> Handle(RegistrationCommand request, CancellationToken cancellationToken)
-        {
-            User user = _mapper.Map<User>(request);
-
+            await _unitOfWork.SaveChangesAsync(token);
+            
             user.Roles.Add(Role.Client);
-            await _userRepository.CreateAsync(user);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
+            
             string jwt = _jwtProvider.GenerateJwt(user);
             string refresh = _jwtProvider.GenerateRefreshToken();
 
             user.RefreshToken = refresh;
             user.RefreshTokenExpiry = DateTime.UtcNow.AddDays(1);
 
-            await _userRepository.UpdateAsync(user, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _userRepository.UpdateAsync(user, token);
+            await _unitOfWork.SaveChangesAsync(token);
 
             return new() { JwtToken = jwt, RefreshToken = refresh };
         }

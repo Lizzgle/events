@@ -1,30 +1,21 @@
-﻿using AutoMapper;
-using Events.Application.Events.Commands.CreateEvent;
-using Events.Domain.Abstractions;
+﻿using Events.Domain.Abstractions;
 using Events.Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Application.Events.Commands.DeleteEvent
 {
     public class DeleteEventCommandHandler : IRequestHandler<DeleteEventCommand>
     {
-        private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEventRepository _eventRepository;
 
-        public DeleteEventCommandHandler(IMapper mapper, IUnitOfWork unitOfWork)
+        public DeleteEventCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _eventRepository = unitOfWork.Events;
+            _eventRepository = unitOfWork.eventRepository;
         }
 
-        public async Task Handle(DeleteEventCommand request, CancellationToken cancellationToken)
+        public async Task Handle(DeleteEventCommand request, CancellationToken token)
         {
 
             Event? dbEvent = await _eventRepository.GetByIdAsync(request.Id);
@@ -33,8 +24,8 @@ namespace Events.Application.Events.Commands.DeleteEvent
                 throw new InvalidOperationException("Event not found.");
             }
 
-            await _eventRepository.DeleteAsync(dbEvent, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            await _eventRepository.DeleteAsync(dbEvent, token);
+            await _unitOfWork.SaveChangesAsync(token);
         }
     }
 }
