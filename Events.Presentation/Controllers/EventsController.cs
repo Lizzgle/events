@@ -7,7 +7,7 @@ using Events.Application.Events.Queries.GetAllEvents;
 using Events.Application.Events.Queries.GetEventById;
 using Events.Application.Events.Queries.GetEventByName;
 using Events.Application.Events.Queries.GetFilteredEvent;
-using Events.Domain.Enums;
+using Events.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,14 +37,14 @@ namespace Events.Presentation.Controllers
         // GET: api/<EventsControllerByFilters>
         [HttpGet("searchByFilters")]
         public async Task<IActionResult> GetEventsByFiltersAsync([FromQuery] DateTime? date,
-            [FromQuery] Category? category,
+            [FromQuery] string? category,
             [FromQuery] string? location,
             CancellationToken token, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
             var query = new GetFilteredEventQuery()
             {
                 Date = date,
-                Category = category,
+                CategoryName = category,
                 Location = location,
                 PageNumber = pageNumber,
                 PageSize = pageSize

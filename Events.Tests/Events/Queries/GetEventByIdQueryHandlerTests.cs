@@ -4,7 +4,6 @@ using Events.Application.Common.Mapper.EventMapping;
 using Events.Application.Events.Queries.GetEventById;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
-using Events.Domain.Enums;
 using Moq;
 
 namespace Events.Tests.Events.Queries

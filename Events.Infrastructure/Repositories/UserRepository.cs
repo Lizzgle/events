@@ -25,6 +25,16 @@ namespace Events.Infrastructure.Repositories
             return base.UpdateAsync(entity, token);
         }
 
+        public override Task CreateAsync(User entity, CancellationToken token = default)
+        {
+            if (entity.Roles.Count != 0)
+            {
+                _context.Roles.AttachRange(entity.Roles);
+            }
+
+            return base.UpdateAsync(entity, token);
+        }
+
         public override Task<User?> GetByIdAsync(Guid id, CancellationToken token = default)
         {
             return _entities.Include(r => r.Roles).FirstOrDefaultAsync(e => e.Id == id, token);

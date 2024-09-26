@@ -3,8 +3,8 @@ using Events.Application.Common.DTOs;
 using Events.Application.Common.Models;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
-using Events.Domain.Enums;
 using MediatR;
+using System.Linq;
 
 namespace Events.Application.Events.Queries.GetFilteredEvent
 {
@@ -32,13 +32,13 @@ namespace Events.Application.Events.Queries.GetFilteredEvent
                 query = query.Where(x => x.DateTime.Date == request.Date);
             }
 
-            if (Enum.IsDefined(typeof(Category), null))
+            if (!string.IsNullOrEmpty(request.CategoryName))
             {
-                query = query.Where(x => x.Category == request.Category);
+                query = query.Where(x => x.Category.Name == request.CategoryName);
             }
 
             if (query is null)
-                throw new KeyNotFoundException($"Event with filters {request.Date} {request.Category} {request.Location} not found");
+                throw new KeyNotFoundException($"Event with filters {request.Date} {request.CategoryName} {request.Location} not found");
 
             var count = query.Count();
             var events = query.Skip((request.PageNumber - 1) * request.PageSize).Take(request.PageSize).ToList();

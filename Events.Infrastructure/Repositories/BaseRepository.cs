@@ -24,7 +24,7 @@ namespace Events.Infrastructure.Repositories
             return Task.CompletedTask;
         }
 
-        public Task<IQueryable<T>> GetAllAsync(CancellationToken token = default)
+        public virtual Task<IQueryable<T>> GetAllAsync(CancellationToken token = default)
         {
             return Task.FromResult(_entities.AsNoTracking().AsQueryable());
         }

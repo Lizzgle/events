@@ -1,6 +1,5 @@
 ﻿using Events.Domain.Abstractions;
 using Events.Domain.Entities;
-using Events.Domain.Enums;
 using Events.Infrastructure;
 using Events.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;

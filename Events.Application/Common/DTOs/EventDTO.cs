@@ -7,7 +7,7 @@
         public string Description { get; set; }
         public DateTime DateTime { get; set; }
         public string Location { get; set; }
-        public string Category { get; set; }
+        public string CategoryName { get; set; }
         public int MaxParticipants { get; set; }
         public string UriImage { get; set; }
     }

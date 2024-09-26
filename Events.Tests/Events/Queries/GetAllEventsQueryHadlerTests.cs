@@ -5,7 +5,6 @@ using Events.Application.Common.Models;
 using Events.Application.Events.Queries.GetAllEvents;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
-using Events.Domain.Enums;
 using Moq;
 
 namespace Events.Tests.Events.Queries

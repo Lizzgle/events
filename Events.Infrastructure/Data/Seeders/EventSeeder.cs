@@ -1,5 +1,4 @@
 ﻿using Events.Domain.Entities;
-using Events.Domain.Enums;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Events.Infrastructure.Data.Seeders
@@ -16,7 +15,8 @@ namespace Events.Infrastructure.Data.Seeders
                     Description = "Мероприятия в честь строительства нового мусоросжигательного завода",
                     DateTime = DateTime.Parse("12.12.2024 18:30"),
                     Location = "Минск",
-                    Category = Category.Conference,
+                    CategoryId = Category.Conference.Id,
+                    //Category = Category.Conference,
                     MaxParticipants = 40,
                     UriImage = ""
                 },
@@ -27,7 +27,8 @@ namespace Events.Infrastructure.Data.Seeders
                     Description = "Есть различные дистанции: 5км, 10.5км, 21км",
                     DateTime = DateTime.Parse("01.11.2024 10:00"),
                     Location = "Стадион Динамо",
-                    Category = Category.Sports,
+                    CategoryId = Category.Sports.Id,
+                    //Category = Category.Sports,
                     MaxParticipants = 10000,
                     UriImage = ""
                 },
@@ -38,7 +39,8 @@ namespace Events.Infrastructure.Data.Seeders
                     Description = "Фестиваль проходит в течение 3-ёх дней на Браславских озерах.",
                     DateTime = DateTime.Parse("28.07.2025 14:00"),
                     Location = "Браслав",
-                    Category = Category.Festival,
+                    CategoryId = Category.Festival.Id,
+                    //Category = Category.Festival,
                     MaxParticipants = 3,
                     UriImage = ""
                 }

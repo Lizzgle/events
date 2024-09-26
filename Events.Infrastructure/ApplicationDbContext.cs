@@ -6,7 +6,9 @@ namespace Events.Infrastructure
 {
     public class ApplicationDbContext : DbContext
     {
+
         public DbSet<Event> Events => Set<Event>();
+        public DbSet<Category> Categories => Set<Category>();
         public DbSet<Participant> Participants => Set<Participant>();
 
         public DbSet<Role> Roles => Set<Role>();
@@ -21,6 +23,7 @@ namespace Events.Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new CategoryEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new EventEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new ParticipantEntityTypeConfigurator());
             modelBuilder.ApplyConfiguration(new RoleEntityTypeConfigurator());

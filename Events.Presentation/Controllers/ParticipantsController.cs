@@ -21,7 +21,6 @@ namespace Events.Presentation.Controllers
 
         [HttpPost("add/toEvent/{eventId}")]
         [Authorize(Policy = PolicyTypes.ClientPolicy)]
-        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<ActionResult<Participant>> AddUserToEventAsync([FromRoute] Guid eventId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -31,7 +30,6 @@ namespace Events.Presentation.Controllers
 
         [HttpDelete("delete/FromEvent/{eventId}")]
         [Authorize(Policy = PolicyTypes.ClientPolicy)]
-        [Authorize(Policy = PolicyTypes.AdminPolicy)]
         public async Task<ActionResult<Participant>> RemoveUserToEventAsync([FromRoute] Guid eventId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

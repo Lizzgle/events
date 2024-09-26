@@ -2,7 +2,6 @@
 using Events.Application.Events.Commands.UpdateEvent;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
-using Events.Domain.Enums;
 using Moq;
 
 namespace Events.Tests.Events.Commands

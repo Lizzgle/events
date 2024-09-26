@@ -2,7 +2,6 @@
 using Events.Application.Events.Commands.CreateEvent;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
-using Events.Domain.Enums;
 using Moq;
 
 namespace Events.Tests.Events.Commands
@@ -39,7 +38,7 @@ namespace Events.Tests.Events.Commands
                 Description = "Test Description",
                 Location = "Test Location",
                 DateTime = DateTime.Parse("2024-12-12"),
-                Category = Category.Conference,
+                CategoryId = Category.Conference.Id,
                 MaxParticipants = 10,
                 UriImage = ""
             };
@@ -61,7 +60,7 @@ namespace Events.Tests.Events.Commands
                                      e.Description == command.Description &&
                                      e.Location == command.Location &&
                                      e.DateTime == command.DateTime &&
-                                     e.Category == command.Category &&
+                                     e.CategoryId == command.CategoryId &&
                                      e.MaxParticipants == command.MaxParticipants &&
                                      e.UriImage == command.UriImage),
                     It.IsAny<CancellationToken>()), Times.Once);

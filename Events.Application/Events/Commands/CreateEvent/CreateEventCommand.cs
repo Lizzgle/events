@@ -1,4 +1,4 @@
-﻿using Events.Domain.Enums;
+﻿using Events.Domain.Entities;
 using MediatR;
 
 namespace Events.Application.Events.Commands.CreateEvent
@@ -9,7 +9,7 @@ namespace Events.Application.Events.Commands.CreateEvent
         public required string Description { get; set; }
         public required DateTime DateTime { get; set; }
         public required string Location { get; set; }
-        public required Category Category { get; set; }
+        public required int CategoryId { get; set; }
         public required int MaxParticipants { get; set; }
         public required string UriImage { get; set; }
     }
