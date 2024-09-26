@@ -7,7 +7,7 @@ git clone https://github.com/Lizzgle/events
 Откройте проект в Visual Studio или любой другой IDE.
 3. Установка начального проекта
 Установите в качестве начального проекта "Events.Presentation"
-4.  Запустите
+4.  Запуск
 
 ## Общая информация
-Весь функционал можно увидеть в Swagger (https://localhost:7001/swagger/)
+Весь функционал можно увидеть в Swagger (https://localhost:7037/swagger/)
