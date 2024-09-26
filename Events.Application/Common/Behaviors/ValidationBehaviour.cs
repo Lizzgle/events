@@ -1,11 +1,6 @@
 ﻿using Events.Application.Common.Exceptions;
 using FluentValidation;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Events.Application.Common.Behaviors
 {
@@ -19,7 +14,7 @@ namespace Events.Application.Common.Behaviors
             _validators = validators;
         }
 
-        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+        public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken token)
         {
             if (_validators.Any())
             {
@@ -27,7 +22,7 @@ namespace Events.Application.Common.Behaviors
 
                 var validationResults = await Task.WhenAll(
                     _validators.Select(v =>
-                        v.ValidateAsync(context, cancellationToken)));
+                        v.ValidateAsync(context, token)));
 
                 var failures = validationResults
                     .Where(r => r.Errors.Count != 0)

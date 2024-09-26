@@ -1,7 +1,6 @@
 ﻿using Events.Application.Common.Providers;
 using Events.Domain.Entities;
 using Events.Presentation.Options.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,6 +17,7 @@ namespace Events.Presentation.Providers
         {
             _jwtOptions = jwtOptions.Value;
         }
+
         public string GenerateJwt(User user)
         {
             var claims = new List<Claim>
@@ -67,7 +67,15 @@ namespace Events.Presentation.Providers
 
         public ClaimsPrincipal? GetClaimsPrincipal(string token)
         {
-            throw new NotImplementedException();
+            var validation = new TokenValidationParameters
+            {
+                ValidIssuer = _jwtOptions.Issuer,
+                ValidAudience = _jwtOptions.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.SecretKey)),
+                ValidateLifetime = false
+            };
+
+            return new JwtSecurityTokenHandler().ValidateToken(token, validation, out _);
         }
     }
 }

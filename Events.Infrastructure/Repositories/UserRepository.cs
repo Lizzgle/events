@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Events.Infrastructure.Repositories
 {
-    internal class UserRepository : BaseRepository<User>, IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
         public UserRepository(ApplicationDbContext context) : base(context) { }
 

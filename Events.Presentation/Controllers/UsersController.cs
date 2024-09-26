@@ -5,6 +5,7 @@ using Events.Application.Users.Queries.GetUserEvents;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -43,14 +44,16 @@ namespace Events.Presentation.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{userId:guid}/events")]
+        [HttpGet("/events")]
         [Authorize(Policy = PolicyTypes.ClientPolicy)]
-        public async Task<IActionResult> GetUserEventsAsync([FromRoute] Guid userId, CancellationToken token, 
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
+        public async Task<IActionResult> GetUserEventsAsync(CancellationToken token, 
             [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 2)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var query = new GetUserEventsQuery()
             {
-                Id = userId,
+                Id = Guid.Parse(userId),
                 PageNumber = pageNumber,
                 PageSize = pageSize
             };

@@ -16,11 +16,11 @@ namespace Events.Infrastructure.Data.Seeders
                     UserId = Guid.Parse("b643dbc3-41cf-4834-9519-04b24df72ea2"),
                     RoleId = Role.Admin.Id,
                 },
-                //new UserRole()
-                //{
-                //    UserId = Guid.Parse("b643dbc3-41cf-4834-9519-04b24df72ea2"),
-                //    RoleId = Role.Client.Id,
-                //},
+                new UserRole()
+                {
+                    UserId = Guid.Parse("b643dbc3-41cf-4834-9519-04b24df72ea2"),
+                    RoleId = Role.Client.Id,
+                },
                 new UserRole()
                 {
                     UserId = Guid.Parse("b7a2e030-0a08-4bfa-b2b6-343cde02c23f"),

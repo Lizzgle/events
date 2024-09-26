@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Events.Infrastructure.Repositories
 {
-    internal class ParticipantRepository : BaseRepository<Participant>, IParticipantRepository
+    public class ParticipantRepository : BaseRepository<Participant>, IParticipantRepository
     {
         public ParticipantRepository(ApplicationDbContext dbContext) : base(dbContext) { }
 

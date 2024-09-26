@@ -17,10 +17,10 @@ namespace Events.Application.Events.Queries.GetEventByName
             _eventRepository = unitOfWork.eventRepository;
         }
 
-        async Task<EventDTO> IRequestHandler<GetEventByNameQuery, EventDTO>.Handle(GetEventByNameQuery request, CancellationToken token)
+        public async Task<EventDTO> Handle(GetEventByNameQuery request, CancellationToken token)
         {
             Event? eventByName = await _eventRepository.GetEventByNameAsync(request.Name, token);
-            
+
             if (eventByName is null)
                 throw new KeyNotFoundException($"Event with name {request.Name} not found");
 

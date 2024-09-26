@@ -5,16 +5,16 @@ namespace Events.Domain.Enums
     public enum Category
     {
         [Display(Name = "Conference")]
-        Conference,
+        Conference = 1,
         [Display(Name = "Festival")]
-        Festival,
+        Festival = 2,
         [Display(Name = "Training")]
-        Training,
+        Training = 3,
         [Display(Name = "Sports")]
-        Sports,
+        Sports = 4,
         [Display(Name = "Webinar")]
-        Webinar,
+        Webinar = 5,
         [Display(Name = "Concert")]
-        Concert
+        Concert = 6
     }
 }

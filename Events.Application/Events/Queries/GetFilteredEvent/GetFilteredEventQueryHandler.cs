@@ -3,6 +3,7 @@ using Events.Application.Common.DTOs;
 using Events.Application.Common.Models;
 using Events.Domain.Abstractions;
 using Events.Domain.Entities;
+using Events.Domain.Enums;
 using MediatR;
 
 namespace Events.Application.Events.Queries.GetFilteredEvent
@@ -31,7 +32,7 @@ namespace Events.Application.Events.Queries.GetFilteredEvent
                 query = query.Where(x => x.DateTime.Date == request.Date);
             }
 
-            if (request.Category.ToString() is null)
+            if (Enum.IsDefined(typeof(Category), null))
             {
                 query = query.Where(x => x.Category == request.Category);
             }

@@ -5,6 +5,7 @@ using Events.Application.Participants.Commands.AddUserToEvent;
 using Events.Application.Participants.Commands.RemoveUserFromEvent;
 using Events.Application.Events.Queries.GetEventByIdWithParticipants;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Events.Presentation.Controllers
 {
@@ -18,19 +19,23 @@ namespace Events.Presentation.Controllers
             _mediator = mediator;
         }
 
-        [HttpPost("add/{userId}/toEvent/{eventId}")]
+        [HttpPost("add/toEvent/{eventId}")]
         [Authorize(Policy = PolicyTypes.ClientPolicy)]
-        public async Task<ActionResult<Participant>> AddUserToEventAsync([FromRoute] Guid userId, Guid eventId)
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
+        public async Task<ActionResult<Participant>> AddUserToEventAsync([FromRoute] Guid eventId)
         {
-            await _mediator.Send(new AddUserToEventCommand() { UserId = userId, EventId = eventId});
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await _mediator.Send(new AddUserToEventCommand() { UserId = Guid.Parse(userId), EventId = eventId});
             return Ok();
         }
 
-        [HttpDelete("delete/{userId}/FromEvent/{eventId}")]
+        [HttpDelete("delete/FromEvent/{eventId}")]
         [Authorize(Policy = PolicyTypes.ClientPolicy)]
-        public async Task<ActionResult<Participant>> RemoveUserToEventAsync([FromRoute] Guid userId, Guid eventId)
+        [Authorize(Policy = PolicyTypes.AdminPolicy)]
+        public async Task<ActionResult<Participant>> RemoveUserToEventAsync([FromRoute] Guid eventId)
         {
-            await _mediator.Send(new RemoveUserFromEventCommand() { UserId = userId, EventId = eventId });
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            await _mediator.Send(new RemoveUserFromEventCommand() { UserId = Guid.Parse(userId), EventId = eventId });
             return Ok();
         }
 

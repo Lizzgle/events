@@ -12,6 +12,6 @@ namespace Events.Domain.Entities
         public int MaxParticipants { get; set; }
         public List<Participant> Participants { get; set; } = new List<Participant>();
         public List<User> Users { get; set; } = new List<User>();
-        public string UriImage { get; set; } 
+        public string? UriImage { get; set; } 
     }
 }
